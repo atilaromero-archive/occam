@@ -18,16 +18,24 @@ def perl(function):
     @loop
     @functools.wraps(function)
     def f(*args,**kwargs):
-        action = perl.plan(f.options)
+        action = f.plan(f.options)
         result = action(*args,**kwargs)
-        perl.record(f.results,result,action,*args,**kwargs)
+        f.record(f.results,result,action,*args,**kwargs)
         return result
     f.options=[function]
     f.results={}
     f.solved=yes
+    f.plan=getperlplan
+    f.record=getperlrecord
     return f
 perl.plan=random.choice
 perl.record=fpass
+
+def getperlplan(*args):
+    return perl.plan(*args)
+
+def getperlrecord(*args,**kwargs):
+    return perl.record(*args,**kwargs)
 
 def loop(function):
     @functools.wraps(function)
