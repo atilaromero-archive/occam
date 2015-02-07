@@ -1,6 +1,7 @@
 import random
+import functools
 
-def choosechoose(options):
+def _choosechoose(options):
     """
     To choose the choosing function for the fist time,
     apply the first choosing funcion on all of them.
@@ -13,14 +14,17 @@ def choosechoose(options):
     return staticmethod(choose(options))
 
 class Choose:
-    choosingoptions = []
+    _choosingoptions = []
     def __init__(self,*options):
         self.options=list(options)
     def __call__(self,*args):
-        return Choose.choose(self.options)(*args)
+        return Choose._choose(self.options)(*args)
     @staticmethod
-    def addChooseFunction(f):
-        Choose.choosingoptions.append(f)
-        Choose.choose = choosechoose(Choose.choosingoptions)
+    def _addChooseFunction(f):
+        Choose._choosingoptions.append(f)
+        Choose._choose = _choosechoose(Choose._choosingoptions)
 
-Choose.addChooseFunction(random.choice)
+Choose._addChooseFunction(random.choice)
+
+def choose(func):
+    return functools.wraps(func)(Choose(func))
