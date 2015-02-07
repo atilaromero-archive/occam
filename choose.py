@@ -27,4 +27,5 @@ class Choose:
 Choose._addChooseFunction(random.choice)
 
 def choose(func):
+    "decorator"
     return functools.wraps(func)(Choose(func))
