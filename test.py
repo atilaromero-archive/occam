@@ -1,30 +1,23 @@
-import random
+import choose
 
-def rnd(options):
-    print 'rnd'
-    return random.choice(options)
-    
-def first(options):
-    print 'first'
-    return options[0]
+def quicksort(l):
+    print 'quicksort'
+    if len(l)<=1:
+        return l[:1]
+    else:
+        g=[x for x in l[1:] if x>l[0]]
+        m=[x for x in l[1:] if x<=l[0]]
+        return quicksort(m)+l[:1]+quicksort(g)
 
-def plan(function):
-    print '@plan',function.func_name
-    def f(*args):
-        print 'plan',function.func_name
-        return plan.default(f.options)(*args)
-    f.options=[function]
-    return f
-plan.default=rnd
+def bubblesort(l):
+    print 'bubblesort'
+    r=l[:]
+    for p in range(len(r)-1,0,-1):
+        for i in range(p):
+            if r[i]>r[i+1]:
+                r[i],r[i+1] = r[i+1],r[i]
+    return r
 
-
-def f1():
-    print 1
-    return 2
-
-@plan
-def f2():
-    print 3
-    return 4
-
-f2.options.append(f1)
+def test():
+    mysort = choose.Choose(quicksort,bubblesort)
+    print mysort(list('784268074'))
