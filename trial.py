@@ -1,24 +1,16 @@
 #!/usr/bin/env python
 
-import random
+import choose
 from equilibrium import A, B, C, D, E, F, piece
-
-def rand(moves):
-    """the most basic and memoryless strategy"""
-    return random.choice(moves)
 
 memory={}
 
-def linear(moves):
-    """assume moves produce a linear effect on obj"""
-    return  random.choice(moves)
-
-def choosemove(moves):
-    for move in moves:
-        if memory.has_key(move):
-        
-def makepredictions(memory):
-    
+@choose.choose
+def trial(function, goal):
+    result = None
+    while not goal():
+        result = function()
+    return result
 
 def test():
     while obj.value != goal:
