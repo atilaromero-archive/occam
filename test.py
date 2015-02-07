@@ -21,3 +21,18 @@ def bubblesort(l):
 def test():
     mysort = choose.Choose(quicksort,bubblesort)
     print mysort(list('784268074'))
+
+def f1():
+    print 1
+
+def f2():
+    print 2
+
+def f3():
+    print 3
+
+def test2():
+    myf = choose.Choose(f1,f2)
+    myf.options.append(f3)
+    for x in range(6):
+        myf()
