@@ -15,7 +15,7 @@ def choosechoose(options):
 class Choose:
     choosingoptions = []
     def __init__(self,*options):
-        self.options=options
+        self.options=list(options)
     def __call__(self,*args):
         return Choose.choose(self.options)(*args)
     @staticmethod
