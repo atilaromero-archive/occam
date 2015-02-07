@@ -25,7 +25,3 @@ class Choose:
         Choose._choose = _choosechoose(Choose._choosingoptions)
 
 Choose._addChooseFunction(random.choice)
-
-def choose(func):
-    "decorator"
-    return functools.wraps(func)(Choose(func))

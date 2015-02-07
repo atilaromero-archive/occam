@@ -1,4 +1,6 @@
 import choose
+import trial
+from equilibrium import A,B,C,D,E,F,piece
 
 def quicksort(l):
     print 'quicksort'
@@ -36,3 +38,10 @@ def test2():
     myf.options.append(f3)
     for x in range(6):
         myf()
+
+def near_zero(x):
+    return -1 < x and x < 1
+
+def testtrial():
+    move = choose.Choose(A,B,C,D,E,F)
+    return trial.trial(move, piece.getvalue, near_zero)

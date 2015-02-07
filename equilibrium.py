@@ -8,6 +8,8 @@ class Obj:
         self.value=random.random()*100
     def __repr__(self):
         return repr(self.value)
+    def getvalue(self):
+        return self.value
 
 piece=Obj()
 
