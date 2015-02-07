@@ -1,16 +1,16 @@
 import random
 
-def rnd(l):
-    return random.choice(l)
-
 def choosechoose(options):
     """
-    To choose the choosing function
-    apply the first choosing funcion on 
-    all of them. Please, just make sure 
-    the first one isn't too biased.
+    To choose the choosing function for the fist time,
+    apply the first choosing funcion on all of them.
+    Please, just make sure the first one isn't too biased.
     """
-    return staticmethod(options[0](options))
+    if hasattr(Choose,'choose'):
+        choose = Choose.choose
+    else:
+        choose = options[0]
+    return staticmethod(choose(options))
 
 class Choose:
     choosingoptions = []
@@ -22,4 +22,5 @@ class Choose:
     def addChooseFunction(f):
         Choose.choosingoptions.append(f)
         Choose.choose = choosechoose(Choose.choosingoptions)
-Choose.addChooseFunction(rnd)
+
+Choose.addChooseFunction(random.choice)
