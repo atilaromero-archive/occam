@@ -2,10 +2,10 @@
 import choose
 
 @choose.Choose
-def trial(function, getstate, goal):
+def loop(recordmove, getstate, goal):
     result = getstate()
+    print result
     while not goal(result):
-        function()
-        result = getstate()
+        result = recordmove()
         print result
     return result

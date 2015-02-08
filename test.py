@@ -1,5 +1,6 @@
+import loop
+import record
 import choose
-import trial
 from equilibrium import A,B,C,D,E,F,piece
 
 def quicksort(l):
@@ -42,6 +43,21 @@ def test2():
 def near_zero(x):
     return -1 < x and x < 1
 
+def bestnum(x,y):
+    if abs(x)<abs(y):
+        return x
+    else:
+        return y
+
 def testtrial():
-    move = choose.Choose(A,B,C,D,E,F)
-    return trial.trial(move, piece.getvalue, near_zero)
+    choosemove = choose.Choose(A,B,C,D,E,F)
+    recordmove = record.recordmove(choosemove,
+                                   piece.getvalue,
+                                   bestnum)
+    return loop.loop(recordmove, 
+                     piece.getvalue, 
+                     near_zero)
+
+#loop( # checkgoal
+#    recordmove( # compare states old and new 
+#        choosemove()))
