@@ -8,6 +8,9 @@ class Choose:
         possiblefunctions: function or list of functions
         choosefunction: will choose which one, probably using KB(Knowledge Base)
         KB: anything that choosefunction undestands or needs
+        
+        After creation, more functions may be added with:
+        myinstance.possiblefunctions.append(newfunc)
 
         Example:
         c will behave like one of these 3 functions.
@@ -26,7 +29,7 @@ class Choose:
         self._choose = types.MethodType(choosefunction,self)
     def __call__(self,*args,**kwargs):
         "myinstance(1,2)"
-        choice = self._choose()
+        choice = self._choose(*args,**kwargs)
         return choice(*args,**kwargs)
     def withKB(self,KB):       #with requirement
         "with myinstance.withKB(newKB) as newinstance:"
@@ -42,5 +45,5 @@ def ensurelist(possiblefunctions):
     else:
         return list(possiblefunctions) #It can be a set, so let's call list() 
    
-def rnd(self): 
+def rnd(self,*args,**kwargs): 
     return random.choice(self.possiblefunctions)

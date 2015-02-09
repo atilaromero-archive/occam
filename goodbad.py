@@ -10,7 +10,7 @@ class GoodBad(choose.Choose):
             self.KB = type('KB', (), {})() #creates an instance of a empty class
         if not hasattr(KB,'memory'):
             KB.memory = {}
-    def _choose(self):
+    def _choose(self,*args,**kwargs):
         candidates = filtercandidates(self.possiblefunctions,self.KB)
         goods = [x for x in candidates if self.KB.memory.get(x,False) == True]
         if len(goods)>0:
