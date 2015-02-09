@@ -1,4 +1,5 @@
 import choose
+import goodbad
 import loop
 from equilibrium import A,B,C,D,E,F,piece
 
@@ -21,8 +22,8 @@ def bubblesort(l):
     return r
 
 def test():
-    mysort = choose.Choose(quicksort,bubblesort)
-    print mysort(list('784268074'),intel=None)
+    mysort = choose.Choose([quicksort,bubblesort])
+    print mysort(list('784268074'))
 
 def f1():
     print 1
@@ -34,10 +35,10 @@ def f3():
     print 3
 
 def test2():
-    myf = choose.Choose(f1,f2)
-    myf.options.append(f3)
+    myf = choose.Choose([f1,f2])
+    myf.addFunction(f3)
     for x in range(6):
-        myf(intel=None)
+        myf()
 
 def near_zero(x):
     return -1 < x and x < 1
@@ -48,11 +49,15 @@ def bestnum(x,y):
     else:
         return y
 
-def testloop():
-    intel = choose.Intel()
-    intel.getstate = piece.getvalue
-    intel.goal = near_zero
-    intel.getbest = bestnum
-    choosemove = choose.Choose(A,B,C,D,E,F)
+class KB:
+    def __repr__(self):
+        return str([x for x in dir(self) if not x.startswith('_')])
 
-    return loop.loop(choosemove,intel=intel)
+def testloop():
+    kb = KB()
+    kb.getstate = piece.getvalue
+    kb.goal = near_zero
+    kb.getbest = bestnum
+    choosemove = choose.Choose([A,B,C,D,E,F],kb)
+    result = loop.loop(choosemove,kb)
+    return result

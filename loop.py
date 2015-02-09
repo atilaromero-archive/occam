@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 import choose
+import goodbad
 
-@choose.Choose
-@choose.need(['getstate','goal'])
-def loop(func,intel):
-    result = intel.getstate()
+def loop(func,KB):
+    result = KB.getstate()
     print result
-    while not intel.goal(result):
-        func(intel=intel)
-        result = intel.getstate()
+    while not KB.goal(result):
+        func()
+        result = KB.getstate()
         print result
     return result
