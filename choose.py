@@ -1,43 +1,46 @@
-def _choosechoose(functions):
-    """
-    To choose the choosing function for the fist time,
-    apply the first choosing funcion on all of them.
-    Please, just make sure the first one isn't too biased.
-    """
-    if hasattr(Choose,'choose'):
-        choose = Choose.choose
-    else:
-        choose = functions[0]
-    return staticmethod(choose(functions,KB=None))
+import types
+import random
 
 class Choose:
-    _choosingpossiblefunctions = []
-    def __init__(self,possiblefunctions,KB=None):
-        if callable(possiblefunctions):
-            self.possiblefunctions = [possiblefunctions]
-        else:
-            self.possiblefunctions = list(possiblefunctions)
-        self.KB = KB
-    def __call__(self,*args,**kwargs):
-        choice = Choose._choose(self.possiblefunctions,self.KB)
-        return choice(*args,**kwargs)
-    def addFunction(self,f):
-        self.possiblefunctions.append(f)
-        return f
-    def withKB(self,KB):
-        return Choose(self.possiblefunctions,KB)
-    def __enter__(self):
-        return self
-    def __exit__(self, *args):
-        pass
-    @staticmethod
-    def _chooseFunction(f):
-        Choose._choosingpossiblefunctions.append(f)
-        Choose._choose = _choosechoose(Choose._choosingpossiblefunctions)
-        return f
+    def __init__(self, choosefunction, possiblefunctions, KB=None):
+        """Creates a callable instance that can behave as one of 
+        many possible functions. 
+        possiblefunctions: function or list of functions
+        choosefunction: will choose which one, probably using KB(Knowledge Base)
+        KB: anything that choosefunction undestands or needs
 
-def withKB(KB):
-    def f(func):
-        func.KB = KB
-        return func
-    return f
+        Example:
+        c will behave like one of these 3 functions.
+        We didn't use KB in _choose, so it's None.
+        >>> c = Choose(rnd,[complex,float,str],None)
+
+        Call c, like a function
+        >>> x = c(1)
+
+        The result, x, is one of (1+0j), 1.0 ,'1'
+        >>> x in [(1+0j), 1.0 ,'1']
+        True
+        """
+        self.possiblefunctions = ensurelist(possiblefunctions)
+        self.KB = KB
+        self._choose = types.MethodType(choosefunction,self)
+    def __call__(self,*args,**kwargs):
+        "myinstance(1,2)"
+        choice = self._choose()
+        return choice(*args,**kwargs)
+    def withKB(self,KB):       #with requirement
+        "with myinstance.withKB(newKB) as newinstance:"
+        return self.__class__(self.possiblefunctions,KB,self.choosefunction)
+    def __enter__(self):       #with requirement
+        return self
+    def __exit__(self, *args): #with requirement
+        pass
+
+def ensurelist(possiblefunctions): 
+    if callable(possiblefunctions):
+        return [possiblefunctions]
+    else:
+        return list(possiblefunctions) #It can be a set, so let's call list() 
+   
+def rnd(self): 
+    return random.choice(self.possiblefunctions)

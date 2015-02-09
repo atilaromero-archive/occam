@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import choose
-import goodbad
 
 def loop(func,KB):
     result = KB.getstate()

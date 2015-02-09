@@ -2,7 +2,27 @@ import choose
 import functools
 import random
 
-def filtercandidates(functions,KB=None):
+class GoodBad(choose.Choose):
+    def __init__(self,functions,KB=None):
+        self.possiblefunctions = choose.ensurelist(functions)
+        self.KB = KB
+        if self.KB is None:
+            self.KB = type('KB', (), {})() #creates an instance of a empty class
+        if not hasattr(KB,'memory'):
+            KB.memory = {}
+    def _choose(self):
+        candidates = filtercandidates(self.possiblefunctions,self.KB)
+        goods = [x for x in candidates if self.KB.memory.get(x,False) == True]
+        if len(goods)>0:
+            move = random.choice(goods)
+        else:
+            move = random.choice(self.possiblefunctions)
+            print move
+        if len(filtercandidates([_recordmove],self.KB))>0:
+            move = _recordmove(move,self.KB)
+        return move
+
+def filtercandidates(functions,KB):
     candidates = []
     for c in functions:
         if hasattr(c,'need'):
@@ -25,20 +45,7 @@ def _recordmove(move,KB):
         old = KB.getstate()
         move(*args,**kwargs)
         new = KB.getstate()
-        choose.Choose.memory[move] = (KB.getbest(old,new) != old)
+        KB.memory[move] = (KB.getbest(old,new) != old)
         return new
     return f
 
-choose.Choose.memory = {}
-@choose.Choose._chooseFunction
-def choosegoodbad(functions,KB=None):
-    candidates = filtercandidates(functions,KB=KB)
-    goods = [x for x in choose.Choose.memory.keys() if x in candidates and choose.Choose.memory[x]]
-    if len(goods)>0:
-        move = random.choice(goods)
-    else:
-        move = random.choice(functions)
-    print move
-    if len(filtercandidates([_recordmove],KB=KB))>0:
-        move = _recordmove(move,KB)
-    return move

@@ -22,7 +22,9 @@ def bubblesort(l):
     return r
 
 def test():
-    mysort = choose.Choose([quicksort,bubblesort])
+    mysort = choose.Choose(choose.rnd,
+                           [quicksort,bubblesort],
+                           None)
     print mysort(list('784268074'))
 
 def f1():
@@ -35,8 +37,8 @@ def f3():
     print 3
 
 def test2():
-    myf = choose.Choose([f1,f2])
-    myf.addFunction(f3)
+    myf = choose.Choose(choose.rnd,[f1,f2],None)
+    myf.possiblefunctions.append(f3)
     for x in range(6):
         myf()
 
@@ -58,6 +60,6 @@ def testloop():
     kb.getstate = piece.getvalue
     kb.goal = near_zero
     kb.getbest = bestnum
-    choosemove = choose.Choose([A,B,C,D,E,F],kb)
+    choosemove = goodbad.GoodBad([A,B,C,D,E,F],kb)
     result = loop.loop(choosemove,kb)
     return result
