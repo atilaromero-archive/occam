@@ -1,6 +1,5 @@
-import loop
-import record
 import choose
+import loop
 from equilibrium import A,B,C,D,E,F,piece
 
 def quicksort(l):
@@ -23,7 +22,7 @@ def bubblesort(l):
 
 def test():
     mysort = choose.Choose(quicksort,bubblesort)
-    print mysort(list('784268074'))
+    print mysort(list('784268074'),intel=None)
 
 def f1():
     print 1
@@ -38,7 +37,7 @@ def test2():
     myf = choose.Choose(f1,f2)
     myf.options.append(f3)
     for x in range(6):
-        myf()
+        myf(intel=None)
 
 def near_zero(x):
     return -1 < x and x < 1
@@ -49,15 +48,11 @@ def bestnum(x,y):
     else:
         return y
 
-def testtrial():
+def testloop():
+    intel = choose.Intel()
+    intel.getstate = piece.getvalue
+    intel.goal = near_zero
+    intel.getbest = bestnum
     choosemove = choose.Choose(A,B,C,D,E,F)
-    recordmove = record.recordmove(choosemove,
-                                   piece.getvalue,
-                                   bestnum)
-    return loop.loop(recordmove, 
-                     piece.getvalue, 
-                     near_zero)
 
-#loop( # checkgoal
-#    recordmove( # compare states old and new 
-#        choosemove()))
+    return loop.loop(choosemove,intel=intel)

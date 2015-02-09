@@ -2,10 +2,12 @@
 import choose
 
 @choose.Choose
-def loop(recordmove, getstate, goal):
-    result = getstate()
+@choose.need(['getstate','goal'])
+def loop(func,intel):
+    result = intel.getstate()
     print result
-    while not goal(result):
-        result = recordmove()
+    while not intel.goal(result):
+        func(intel=intel)
+        result = intel.getstate()
         print result
     return result
