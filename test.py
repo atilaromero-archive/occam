@@ -63,3 +63,7 @@ def testloop():
     choosemove = goodbad.GoodBad([A,B,C,D,E,F],kb)
     result = loop.loop(choosemove,kb)
     return result
+
+def testsp():
+    move = spchoose.SPChoose([A,B,C,D,E,F])
+    move.KB.goal = (-1<move.KB.result) & (move.KB.result<1)
