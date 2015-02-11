@@ -1,4 +1,6 @@
 import sympy
+import random
+import functools
 import choose
 import KB
 
@@ -15,15 +17,15 @@ class SPChoose(choose.Choose):
         else:
             move = random.choice(self.possiblefunctions)
         print move
-        move = _recordmove(move,self.KB)
-        return move
+        return _recordmove(move,self.KB)
 
 def _recordmove(move,KB):
     @functools.wraps(move)
     def f(*args,**kwargs):
-        old = KB.getstate()
-        move(*args,**kwargs)
-        new = KB.getstate()
+        old = KB.values.get('result')
+        KB.args = args
+        new = move(*args,**kwargs)
+        KB.result = new
         KB.memory[move] = (KB.getbest(old,new) != old)
         return new
     return f

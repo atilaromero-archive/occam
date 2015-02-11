@@ -1,5 +1,6 @@
 import choose
 import goodbad
+import spchoose
 import loop
 from equilibrium import A,B,C,D,E,F,piece
 
@@ -46,9 +47,12 @@ def near_zero(x):
     return -1 < x and x < 1
 
 def bestnum(x,y):
-    if abs(x)<abs(y):
-        return x
-    else:
+    try:
+        if abs(x)<abs(y):
+            return x
+        else:
+            return y
+    except:
         return y
 
 class KB:
@@ -66,4 +70,7 @@ def testloop():
 
 def testsp():
     move = spchoose.SPChoose([A,B,C,D,E,F])
+    move.KB.getbest = bestnum
     move.KB.goal = (-1<move.KB.result) & (move.KB.result<1)
+    move()
+    return move
