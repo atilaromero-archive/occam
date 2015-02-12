@@ -59,3 +59,7 @@ def testsm():
         move()
         print move.KB.values.f,move.KB.values.result
     return move
+
+def testmod():
+    moderator = choose.Moderator([choose.Base,choose.ShortMemory])
+    move = moderator([A,B,C,D,E,F])
