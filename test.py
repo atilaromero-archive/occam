@@ -1,7 +1,5 @@
 import choose
-import goodbad
-import spchoose
-import loop
+import sympy
 from equilibrium import A,B,C,D,E,F,piece
 
 def quicksort(l):
@@ -23,9 +21,7 @@ def bubblesort(l):
     return r
 
 def test():
-    mysort = choose.Choose(choose.rnd,
-                           [quicksort,bubblesort],
-                           None)
+    mysort = choose.Base([quicksort,bubblesort])
     print mysort(list('784268074'))
 
 def f1():
@@ -38,7 +34,7 @@ def f3():
     print 3
 
 def test2():
-    myf = choose.Choose(choose.rnd,[f1,f2],None)
+    myf = choose.Base([f1,f2])
     myf.possiblefunctions.append(f3)
     for x in range(6):
         myf()
@@ -55,23 +51,11 @@ def bestnum(x,y):
     except:
         return y
 
-class KB:
-    def __repr__(self):
-        return str([x for x in dir(self) if not x.startswith('_')])
-
-def testloop():
-    kb = KB()
-    kb.getstate = piece.getvalue
-    kb.goal = near_zero
-    kb.getbest = bestnum
-    choosemove = goodbad.GoodBad([A,B,C,D,E,F],kb)
-    result = loop.loop(choosemove,kb)
-    return result
-
-def testsp():
-    import sympy
-    move = spchoose.SPChoose([A,B,C,D,E,F])
+def testsm():
+    move = choose.ShortMemory([A,B,C,D,E,F])
     move.KB.getbest = bestnum
     move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
-    move()
+    for x in range(10):
+        move()
+        print move.KB.values.f,move.KB.values.result
     return move
