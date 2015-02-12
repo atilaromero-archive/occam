@@ -69,8 +69,9 @@ def testloop():
     return result
 
 def testsp():
+    import sympy
     move = spchoose.SPChoose([A,B,C,D,E,F])
     move.KB.getbest = bestnum
-    move.KB.goal = (-1<move.KB.result) & (move.KB.result<1)
+    move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
     move()
     return move

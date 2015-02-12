@@ -1,5 +1,6 @@
 import types
 import random
+import functools
 
 class Choose:
     def __init__(self, choosefunction, possiblefunctions, KB=None):
@@ -28,9 +29,12 @@ class Choose:
         self.KB = KB
         self._choose = types.MethodType(choosefunction,self)
     def __call__(self,*args,**kwargs):
-        "myinstance(1,2)"
         choice = self._choose(*args,**kwargs)
-        return choice(*args,**kwargs)
+        result = choice(*args,**kwargs)
+        self.__aftercall__(choice,args,kwargs,result)
+        return result
+    def __aftercall__(self,choice,args,kwargs,result):
+        pass
     def withKB(self,KB):       #with requirement
         "with myinstance.withKB(newKB) as newinstance:"
         return self.__class__(self.possiblefunctions,KB,self.choosefunction)
