@@ -1,22 +1,27 @@
 import sympy
 import random
 import functools
-import choose
+import base
 import KB
 
-class SPChoose(choose.Choose):
+class ShortMemory(base.Base):
     def __init__(self,functions):
-        self.possiblefunctions = choose.ensurelist(functions)
+        self.possiblefunctions = base.ensurelist(functions)
         self.KB = KB.KB()
         self.KB.memory = {}
-    def _choose(self,*args,**kwargs):
-        #checks if f is in memory and have performed well
-        goods = [f for f in self.possiblefunctions if self.KB.memory.get(f,False) == True]
-        if len(goods)>0:
-            choice = random.choice(goods)
-        else:
-            choice = random.choice(self.possiblefunctions)
-        return choice
+    def __getgrades__(self,*args,**kwargs):
+        grades = []
+        for f in self.possiblefunctions:
+            registry = self.KB.memory.get(f,0)
+            if registry == 0: # not in memory
+                grades.append(0)
+            elif registry == False:
+                grades.append(-1)
+            elif registry == True:
+                grades.append(1)
+            else:
+                raise ValueError(registry)
+        return zip(self.possiblefunctions,grades)
     def __aftercall__(self,choice,args,kwargs,result):
         self.KB.vars.f = choice.func_name
         old = getattr(self.KB.values,'result',None)
