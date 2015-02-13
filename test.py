@@ -21,7 +21,7 @@ def bubblesort(l):
     return r
 
 def test():
-    mysort = choose.Base([quicksort,bubblesort])
+    mysort = choose.BaseRnd([quicksort,bubblesort])
     print mysort(list('784268074'))
 
 def f1():
@@ -63,3 +63,9 @@ def testsm():
 def testmod():
     moderator = choose.Moderator([choose.Base,choose.ShortMemory])
     move = moderator([A,B,C,D,E,F])
+    move.KB.getbest = bestnum
+    move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
+    for x in range(10):
+        move()
+        print move.KB.values.f,move.KB.values.result
+    return move
