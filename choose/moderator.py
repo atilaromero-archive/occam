@@ -3,10 +3,14 @@ import base
 import kb
 
 class ModeratorFactory(object):
-    def __init__(self, choosers):
+    def __init__(self, moderator,choosers):
+        self.moderator = moderator
         self.choosers = choosers
     def __call__(self, possiblefunctions):
-        return Moderator(self.choosers,possiblefunctions)
+        modinstance = self.moderator([])
+        for c in self.choosers:
+            modinstance.possiblefunctions.append(c(possiblefunctions,KB=modinstance.KB))
+        return modinstance
 
 class Moderator(base.BaseRnd):
     def __init__(self, choosers, possiblefunctions,KB=None):

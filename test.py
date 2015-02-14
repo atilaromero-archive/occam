@@ -61,11 +61,11 @@ def testsm():
     return move
 
 def testmod():
-    moderator = choose.ModeratorFactory([choose.BaseRnd,choose.ShortMemory])
+    moderator = choose.ModeratorFactory(choose.ShortMemory,[choose.BaseRnd,choose.ShortMemory])
     move = moderator([A,B,C,D,E,F])
     move.KB.getbest = bestnum
     move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
     for x in range(30):
         move()
-        print str(move.lastchooser.__class__).rsplit('.',1)[-1],move.notes.values.f,move.notes.values.result,move.notes.memory.values()
+        print move.notes.values.f,move.notes.values.result,move.notes.memory.values()
     return move

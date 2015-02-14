@@ -24,7 +24,7 @@ class ShortMemory(base.BaseRnd):
         return zip(self.possiblefunctions,grades)
     def __aftercall__(self,choice,args,kwargs,result):
         old = getattr(self.notes.values,'result',None)
-        self.notes.vars.f = choice.func_name
+        self.notes.vars.f = choice
         self.notes.vars.result = result
         self.notes.vars.args = args
         self.notes.memory[choice] = (self.KB.getbest(old,result) != old)
