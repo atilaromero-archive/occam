@@ -2,17 +2,17 @@ import sympy
 import random
 import functools
 import base
-import KB
+import kb
 
-class ShortMemory(base.Base):
-    def __init__(self,functions):
-        self.possiblefunctions = base.ensurelist(functions)
-        self.KB = KB.KB()
-        self.KB.memory = {}
+class ShortMemory(base.BaseRnd):
+    def __init__(self,functions,KB=None):
+        super(ShortMemory,self).__init__(functions,KB or kb.KB())
+        self.notes = kb.KB()
+        self.notes.memory = {}
     def __getgrades__(self,*args,**kwargs):
         grades = []
         for f in self.possiblefunctions:
-            registry = self.KB.memory.get(f,0)
+            registry = self.notes.memory.get(f,0)
             if registry == 0: # not in memory
                 grades.append(0)
             elif registry == False:
@@ -23,8 +23,8 @@ class ShortMemory(base.Base):
                 raise ValueError(registry)
         return zip(self.possiblefunctions,grades)
     def __aftercall__(self,choice,args,kwargs,result):
-        self.KB.vars.f = choice.func_name
-        old = getattr(self.KB.values,'result',None)
-        self.KB.vars.result = result
-        self.KB.vars.args = args
-        self.KB.memory[choice] = (self.KB.getbest(old,result) != old)
+        old = getattr(self.notes.values,'result',None)
+        self.notes.vars.f = choice.func_name
+        self.notes.vars.result = result
+        self.notes.vars.args = args
+        self.notes.memory[choice] = (self.KB.getbest(old,result) != old)

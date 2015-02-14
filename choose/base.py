@@ -3,7 +3,7 @@ import random
 import functools
 import itertools
 
-class BaseRnd:
+class BaseRnd(object):
     def __init__(self, possiblefunctions, KB=None):
         """Creates a callable instance that can behave as one of 
         many possible functions. 
