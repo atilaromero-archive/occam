@@ -34,7 +34,7 @@ def f3():
     print 3
 
 def test2():
-    myf = choose.Base([f1,f2])
+    myf = choose.BaseRnd([f1,f2])
     myf.possiblefunctions.append(f3)
     for x in range(6):
         myf()
@@ -61,7 +61,7 @@ def testsm():
     return move
 
 def testmod():
-    moderator = choose.Moderator([choose.Base,choose.ShortMemory])
+    moderator = choose.ModeratorFactory([choose.BaseRnd,choose.ShortMemory])
     move = moderator([A,B,C,D,E,F])
     move.KB.getbest = bestnum
     move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
