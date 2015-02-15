@@ -23,7 +23,7 @@ class varsVault(object):
     call to regular __setattr__
     
     * if key is a symbol and is receiving another symbol,
-    we assume '=' is intented as mathematical '=', not assigment
+    we assume '=' is intended as mathematical '=', not assignment
     > myvault.symbolA = symbolB
     _parentKB receives a new statement: Eq(symbolA,symbolB)
     
