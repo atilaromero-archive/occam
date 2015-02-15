@@ -39,8 +39,6 @@ class BaseRnd(object):
         """Will choose only one of the options"""
         grades = self.__getgrades__(*args,**kwargs)
         bestgrade = max([g for f,g in grades])
-        assert bestgrade <= 1  # to avoid cheaters
-        assert bestgrade >= -1 
         bests = [f for f,g in grades if g == bestgrade]
         return random.choice(bests)
     def __getgrades__(self,*args,**kwargs):

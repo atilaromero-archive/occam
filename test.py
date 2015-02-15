@@ -52,20 +52,39 @@ def bestnum(x,y):
         return y
 
 def testsm():
-    move = choose.ShortMemory([A,B,C,D,E,F])
+    move = getattr(testsm,'move',choose.ShortMemory([A,B,C,D,E,F]))
+    testsm.move = move
     move.KB.getbest = bestnum
     move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
     for x in range(10):
         move()
-        print move.KB.values.f,move.KB.values.result
+        print move.notes.values.f,move.notes.values.result
     return move
 
 def testmod():
-    moderator = choose.ModeratorFactory(choose.ShortMemory,[choose.BaseRnd,choose.ShortMemory])
-    move = moderator([A,B,C,D,E,F])
+    if not hasattr(testmod,'move'):
+        moderator = choose.ModeratorFactory(choose.Points,[choose.BaseRnd,
+                                                           choose.ShortMemory,
+                                                           choose.Points])
+        testmod.move = moderator([A,B,C,D,E,F])
+    move = testmod.move
     move.KB.getbest = bestnum
     move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
     for x in range(30):
         move()
-        print move.notes.values.f,move.notes.values.result,move.notes.memory.values()
+        print move.notes.values.result,move.notes.memory.values(),move.notes.values.f
+    return move
+
+def testmod2():
+    if not hasattr(testmod,'move'):
+        moderator = choose.ModeratorFactory(choose.ShortMemory,[choose.BaseRnd,
+                                                                choose.ShortMemory,
+                                                                choose.Points])
+        testmod.move = moderator([A,B,C,D,E,F])
+    move = testmod.move
+    move.KB.getbest = bestnum
+    move.KB.vars.goal = sympy.Eq(move.KB.vars.result,0)
+    for x in range(30):
+        move()
+        print move.notes.values.result,move.notes.memory.values(),move.notes.values.f
     return move

@@ -5,7 +5,7 @@ class KB(object):
         self.statements = []
         self.vars = varsVault(self)
         self.values = AttrDict()
-        for x in sympy.symbols('result f args goal'.split()):
+        for x in sympy.symbols('oldresult result f args goal'.split()):
             setattr(self.vars,x.name,x)
         self.vars.result = self.vars.f(self.vars.args)
         
