@@ -16,3 +16,9 @@ def dictRunner(node):
         return node.iteritems()
     except AttributeError:
         return {}
+
+def getItem(node,keyaddress):
+    if len(keyaddress)>1:
+        return getItem(node[keyaddress[0]],keyaddress[1:])
+    else:
+        return node[keyaddress[0]]

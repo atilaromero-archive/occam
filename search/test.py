@@ -29,3 +29,11 @@ def test3(n=4):
         return node == n
     deep = BreadthFirstRecursive(listRunner,isgoal)
     return deep('start',lst2),lst2
+
+def test5(n=4):
+    lst = [0,1,[0,[0,[0,1,[4,5,6]]]],2,[0,1,2,3,4],4]
+    def isgoal(key,node):
+        return node == n
+    deep = DepthFirst(listRunner,isgoal)
+    return deep('start',lst)
+
