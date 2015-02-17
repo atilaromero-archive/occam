@@ -1,7 +1,10 @@
 class Search(object):
-    def __init__(self,runner,isgoal):
+    def __init__(self,runner,isgoal,heuristic = None):
         self.runner = runner
         self.isgoal = isgoal
+        if heuristic is None:
+            heuristic = (lambda:0)
+        self.heuristic = heuristic
     def __call__(self,state,goal):
         raise NotImplementedError
 
